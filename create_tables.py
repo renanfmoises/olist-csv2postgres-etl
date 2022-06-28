@@ -1,7 +1,6 @@
 """This module creates the tables in the PostgreSQL"""
 
 import datetime
-from io import StringIO
 import psycopg2
 from sql_queries import drop_table_queries, create_table_queries
 from db_params import param_dict
