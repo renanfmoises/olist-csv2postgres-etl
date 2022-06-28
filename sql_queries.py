@@ -28,7 +28,7 @@ customers_table_create = """
 
 geolocation_table_create = """
     CREATE TABLE geolocation (
-        geolocation_zip_code_prefix  VARCHAR NOT NULL,
+        geolocation_zip_code_prefix  VARCHAR,
         geolocation_lat              FLOAT,
         geolocation_lng              FLOAT,
         geolocation_city             VARCHAR,
@@ -53,9 +53,9 @@ products_table_create = """
     CREATE TABLE products (
         product_id                  VARCHAR NOT NULL PRIMARY KEY,
         product_category_name       VARCHAR,
-        product_name_lenght         INT,
-        product_description_lenght  INT,
-        product_photos_qty          INT,
+        product_name_lenght         FLOAT,
+        product_description_lenght  FLOAT,
+        product_photos_qty          FLOAT,
         product_weight_g            FLOAT,
         product_length_cm           FLOAT,
         product_height_cm           FLOAT,
@@ -66,7 +66,7 @@ products_table_create = """
 sellers_table_create = """
     CREATE TABLE sellers (
         seller_id               VARCHAR NOT NULL PRIMARY KEY,
-        seller_zip_code_prefix  INT,
+        seller_zip_code_prefix  VARCHAR,
         seller_city             VARCHAR,
         seller_state            VARCHAR
     );
@@ -75,7 +75,7 @@ sellers_table_create = """
 order_items_table_create = """
     CREATE TABLE order_items (
         order_id             VARCHAR REFERENCES orders (order_id),
-        order_item_id        INT NOT NULL PRIMARY KEY,
+        order_item_id        INT NOT NULL,
         product_id           VARCHAR REFERENCES products (product_id),
         seller_id            VARCHAR REFERENCES sellers (seller_id),
         shipping_limit_date  TIMESTAMP,
@@ -95,16 +95,26 @@ order_payments_table_create = """
     );
 """
 
+# order_reviews_table_create = """
+#     CREATE TABLE order_reviews (
+#         review_id                VARCHAR NOT NULL PRIMARY KEY,
+#         order_id                 VARCHAR REFERENCES orders (order_id),
+#         review_score             INT,
+#         review_comment_title     VARCHAR,
+#         review_comment_message   VARCHAR,
+#         review_creation_date     TIMESTAMP,
+#         review_answer_timestamp  TIMESTAMP
+
+#     );
+# """
+
 order_reviews_table_create = """
     CREATE TABLE order_reviews (
         review_id                VARCHAR NOT NULL PRIMARY KEY,
-        order_id                 VARCHAR REFERENCES orders (order_id),
+        order_id                 VARCHAR,
         review_score             INT,
-        review_comment_title     VARCHAR,
-        review_comment_message   VARCHAR,
         review_creation_date     TIMESTAMP,
         review_answer_timestamp  TIMESTAMP
-
     );
 """
 
