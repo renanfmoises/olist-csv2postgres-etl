@@ -1,7 +1,10 @@
 """This module creates the tables in the PostgreSQL"""
 
+import datetime
+from io import StringIO
 import psycopg2
 from sql_queries import drop_table_queries, create_table_queries
+from db_params import param_dict
 
 
 def drop_tables(cur, conn):
@@ -29,17 +32,21 @@ def create_tables(cur, conn):
 
 
 def main():
-    conn_string = "host='localhost' dbname='olist' user='renan' password='postgres'"
-    print(conn_string)
+    # Get params for connecting to DB
+    pdict = param_dict
 
-    conn = psycopg2.connect(conn_string)
+    # Connect to DB
+    conn = psycopg2.connect(**pdict)
+
+    # Create cursor
     cur = conn.cursor()
 
-    print(">> DROPPPING TABLES (IF EXISTS).")
+    print(f">> {datetime.datetime.now()} - DROPPPING TABLES (IF EXISTS).")
     drop_tables(cur, conn)
 
-    print(">> CREATING TABLES.")
+    print(f">> {datetime.datetime.now()} - CREATING TABLES.")
     create_tables(cur, conn)
+    print(f">> {datetime.datetime.now()} - TABLES CREATED.")
 
     conn.close()
 
