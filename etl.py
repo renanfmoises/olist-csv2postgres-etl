@@ -74,10 +74,12 @@ def copy_from_string(conn, df, table):
     cursor = conn.cursor()
 
     try:
+        # copy_expert method allows to use COPY FROM STDIN
         cursor.copy_expert(
             f"""COPY {table} FROM STDIN WITH (FORMAT CSV)""", buffer
-        )  # copy_expert allows to use COPY FROM STDIN
-        # cursor.copy_from(buffer, table, null="", sep=",", columns=df.columns) # copy_from cannot handle review_comment_message text field with commas
+        )
+        # copy_from method cannot handle order_reviews['review_comment_message'] text field with commas
+        # cursor.copy_from(buffer, table, null="", sep=",", columns=df.columns)
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")
