@@ -44,13 +44,17 @@ def connect(params: dict):
 
     try:
         # connect to the PostgreSQL server
-        print(f">> {datetime.datetime.now()} - Connecting to PostgreSQL database...")
+        print(
+            f">> {datetime.datetime.now()} | [ CONN ] | Connecting to PostgreSQL database..."
+        )
         conn = psycopg2.connect(**param_dict)
+        print(
+            f">> {datetime.datetime.now()} | [ CONN ] | Connection to PostgreSQL database successful."
+        )
         return conn
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
         sys.exit(1)
-    print(f">> {datetime.datetime.now()} - PostgreSQL database connection established.")
 
 
 def copy_from_string(conn, df, table):
@@ -70,18 +74,23 @@ def copy_from_string(conn, df, table):
     cursor = conn.cursor()
 
     try:
-        cursor.copy_from(buffer, table, sep=",", null="", columns=df.columns)
+        cursor.copy_expert(
+            f"""COPY {table} FROM STDIN WITH (FORMAT CSV)""", buffer
+        )  # copy_expert allows to use COPY FROM STDIN
+        # cursor.copy_from(buffer, table, null="", sep=",", columns=df.columns) # copy_from cannot handle review_comment_message text field with commas
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error: {error}")
         conn.rollback()
         cursor.close()
         return 1
-    print(f">> {datetime.datetime.now()} - {table} table populated.")
+    print(f">> {datetime.datetime.now()} | [ ETL ] | {table} table populated.")
 
     cursor.close()
 
 
+# -------------------------
+# The main function of the script
 def main():
     """This function connects to the PostgreSQL database and populates the tables."""
     # Connect to DB
@@ -89,7 +98,8 @@ def main():
 
     # Copy data to DB
     for file, table in zip(file_names, tables):
-        copy_from_string(conn, pd.read_csv(f"raw_data/{file}"), table)
+        df = pd.read_csv(f"raw_data/{file}", sep=",")
+        copy_from_string(conn, df, table)
 
     # Close connection
     conn.close()

@@ -40,12 +40,12 @@ def main():
     # Create cursor
     cur = conn.cursor()
 
-    print(f">> {datetime.datetime.now()} - DROPPPING TABLES (IF EXISTS).")
+    print(f">> {datetime.datetime.now()} | [ TABLE ] | DROPPPING TABLES (IF EXISTS).")
     drop_tables(cur, conn)
 
-    print(f">> {datetime.datetime.now()} - CREATING TABLES.")
+    print(f">> {datetime.datetime.now()} | [ TABLE ] | CREATING TABLES.")
     create_tables(cur, conn)
-    print(f">> {datetime.datetime.now()} - TABLES CREATED.")
+    print(f">> {datetime.datetime.now()} | [ TABLE ] | TABLES CREATED.")
 
     conn.close()
 
