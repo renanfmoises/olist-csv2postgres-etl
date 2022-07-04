@@ -20,6 +20,7 @@ black:
 clean:
 	@rm -f */version.txt
 	@rm -f .coverage
+	@rm -f .DS_Store
 	@rm -fr */*/__pycache__ */__pycache__ */*.pyc __pycache__
 	@rm -fr build dist
 	@rm -fr *.dist-info
