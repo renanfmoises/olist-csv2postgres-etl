@@ -1,5 +1,6 @@
 """This module keeps the SQL queries for the ETL pipeline."""
 
+
 # DROP TABLES
 
 drop_if_exists = "DROP TABLE IF EXISTS {} CASCADE;"
@@ -26,6 +27,7 @@ customers_table_create = """
     );
 """
 
+
 geolocation_table_create = """
     CREATE TABLE geolocation (
         geolocation_zip_code_prefix  VARCHAR,
@@ -35,6 +37,7 @@ geolocation_table_create = """
         geolocation_state            VARCHAR
     );
 """
+
 
 orders_table_create = """
     CREATE TABLE orders (
@@ -48,6 +51,7 @@ orders_table_create = """
         order_estimated_delivery_date  TIMESTAMP
     );
 """
+
 
 products_table_create = """
     CREATE TABLE products (
@@ -63,6 +67,7 @@ products_table_create = """
     );
 """
 
+
 sellers_table_create = """
     CREATE TABLE sellers (
         seller_id               VARCHAR NOT NULL PRIMARY KEY,
@@ -71,6 +76,7 @@ sellers_table_create = """
         seller_state            VARCHAR
     );
 """
+
 
 order_items_table_create = """
     CREATE TABLE order_items (
@@ -85,6 +91,7 @@ order_items_table_create = """
     );
 """
 
+
 order_payments_table_create = """
     CREATE TABLE order_payments (
         order_id              VARCHAR REFERENCES orders (order_id),
@@ -95,26 +102,17 @@ order_payments_table_create = """
     );
 """
 
-# order_reviews_table_create = """
-#     CREATE TABLE order_reviews (
-#         review_id                VARCHAR NOT NULL PRIMARY KEY,
-#         order_id                 VARCHAR REFERENCES orders (order_id),
-#         review_score             INT,
-#         review_comment_title     VARCHAR,
-#         review_comment_message   VARCHAR,
-#         review_creation_date     TIMESTAMP,
-#         review_answer_timestamp  TIMESTAMP
-
-#     );
-# """
 
 order_reviews_table_create = """
     CREATE TABLE order_reviews (
-        review_id                VARCHAR NOT NULL PRIMARY KEY,
+        review_id                VARCHAR NOT NULL,
         order_id                 VARCHAR,
         review_score             INT,
+        review_comment_title     TEXT,
+        review_comment_message   TEXT,
         review_creation_date     TIMESTAMP,
         review_answer_timestamp  TIMESTAMP
+
     );
 """
 
